@@ -32,12 +32,12 @@ function loadProducts(filter = "") {
   const filtered = products.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()));
   
   if (!filtered.length) {
-    productList.innerHTML = <p class='text-center text-muted'>Mahsulot topilmadi.</p>;
+    productList.innerHTML = `<p class='text-center text-muted'>Mahsulot topilmadi.</p>`;
     return;
   }
 
   filtered.forEach((p, i) => {
-    productList.innerHTML += 
+    productList.innerHTML += `
       <div class='col-md-3'>
         <div class='card shadow-sm h-100' style='width: 18rem;'>
           <img src='${p.image}' class='card-img-top img-fluid' alt='${p.name}' style='height: 250px; object-fit: cover;'>
@@ -47,17 +47,16 @@ function loadProducts(filter = "") {
             <button class='btn btn-success mt-auto' onclick='addToBasket(${i})'>Купить</button>
           </div>
         </div>
-      </div>;
+      </div>`;
   });
 }
 
 function addToBasket(index) {
   let item = basket.find(b => b.name === products[index].name);
   item ? item.quantity++ : basket.push({ ...products[index], quantity: 1 });
-  localStorage.setItem("basket", JSON.stringify(basket));
-  updateCartCounter();
-  loadBasket();
+  updateStorage();
 }
+
 
 function updateCartCounter() {
   document.getElementById("cart-counter").textContent = basket.reduce((t, i) => t + i.quantity, 0);
@@ -72,14 +71,14 @@ function loadBasket(filter = "") {
   const filtered = basket.filter(i => i.name.toLowerCase().includes(filter.toLowerCase()));
   
   if (!filtered.length) {
-    basketList.innerHTML = <p class='text-center text-muted'>Savatcha bo'sh.</p>;
+    basketList.innerHTML = `<p class='text-center text-muted'>Savatcha bo'sh.</p>`;
     document.getElementById("total-price").textContent = 0;
     return;
   }
 
   filtered.forEach((i, index) => {
     total += i.price * i.quantity;
-    basketList.innerHTML += 
+    basketList.innerHTML += `
       <div class='col-md-6 col-lg-4'>
         <div class='card shadow-sm mb-3'>
           <img src='${i.image}' class='card-img-top img-fluid' alt='${i.name}'>
@@ -96,7 +95,7 @@ function loadBasket(filter = "") {
             </div>
           </div>
         </div>
-      </div>;
+      </div>`;
   });
 
   document.getElementById("total-price").textContent = total;
